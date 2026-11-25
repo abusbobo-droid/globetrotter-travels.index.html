@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobeTrotter Travels • Book Your Dream Trip</title>
+    <meta name="description" content="Handpicked experiences, seamless booking, and unforgettable journeys. Explore curated trips to Santorini, Bali, Marrakech, Kyoto and beyond with GlobeTrotter Travels.">
+    <meta property="og:title" content="GlobeTrotter Travels • Book Your Dream Trip">
+    <meta property="og:description" content="Handpicked experiences, seamless booking, and unforgettable journeys.">
+    <meta property="og:image" content="/.netlify/images?url=/img/hero.jpg&amp;w=1200&amp;fm=jpg">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230f766e'/><text x='50' y='70' font-size='60' text-anchor='middle'>🌍</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f766e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 88px;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .heading {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(15, 118, 110, 0.65), rgba(15, 118, 110, 0.55)), url('/.netlify/images?url=/img/hero.jpg&w=2000&fm=webp');
+            background-size: cover;
+            background-position: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg {
+                background: linear-gradient(rgba(15, 118, 110, 0.65), rgba(15, 118, 110, 0.55)), url('/.netlify/images?url=/img/hero.jpg&w=900&fm=webp');
+                background-size: cover;
+                background-position: center;
+            }
+        }
+
+        .trip-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .trip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-active {
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+        }
+
+        .destination-bg {
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .destination-bg-inner {
+            transform: scale(1.06);
+        }
+
+        .destination-bg-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-backdrop {
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-panel {
+            animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .field:focus {
+            outline: none;
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgb(15 118 110 / 0.15);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navbar -->
+    <nav class="bg-white/95 backdrop-blur border-b sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="px-6 py-4 flex items-center justify-between">
+                <a href="#" class="flex items-center gap-x-3" aria-label="GlobeTrotter Travels home">
+                    <div class="w-11 h-11 bg-teal-700 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-globe text-white text-3xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-3xl tracking-tighter">GlobeTrotter</span>
+                        <span class="text-teal-700 font-semibold">Travels</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#destinations" class="nav-link hover:text-teal-700 transition-colors">Destinations</a>
+                    <a href="#trips" class="nav-link hover:text-teal-700 transition-colors">Trips</a>
+                    <a href="#how" class="nav-link hover:text-teal-700 transition-colors">How it Works</a>
+                    <a href="#blog" class="nav-link hover:text-teal-700 transition-colors">Stories</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <button onclick="showLoginModal()"
+                            class="hidden md:block px-5 py-2.5 text-sm font-medium hover:bg-gray-100 rounded-2xl transition-colors">
+                        Log in
+                    </button>
+                    <button onclick="showBookingModal()"
+                            class="bg-teal-700 hover:bg-teal-800 transition-colors text-white px-6 py-2.5 rounded-2xl text-sm font-semibold flex items-center gap-x-2">
+                        <i class="fa-solid fa-plane"></i>
+                        <span>Book Now</span>
+                    </button>
+
+                    <!-- Mobile Menu -->
+                    <button class="md:hidden w-10 h-10 flex items-center justify-center" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" id="mobile-menu-btn">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu panel -->
+            <div id="mobile-menu" class="hidden md:hidden border-t px-6 py-4">
+                <div class="flex flex-col gap-y-1 text-base font-medium">
+                    <a href="#destinations" onclick="toggleMobileMenu(false)" class="py-2.5 hover:text-teal-700">Destinations</a>
+                    <a href="#trips" onclick="toggleMobileMenu(false)" class="py-2.5 hover:text-teal-700">Trips</a>
+                    <a href="#how" onclick="toggleMobileMenu(false)" class="py-2.5 hover:text-teal-700">How it Works</a>
+                    <a href="#blog" onclick="toggleMobileMenu(false)" class="py-2.5 hover:text-teal-700">Stories</a>
+                    <button onclick="toggleMobileMenu(false); showLoginModal()" class="text-left py-2.5 hover:text-teal-700">Log in</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg h-[620px] flex items-center">
+        <div class="max-w-screen-xl mx-auto px-6 w-full">
+            <div class="max-w-lg">
+                <div class="inline-flex items-center gap-x-2 bg-white/90 px-4 py-1.5 rounded-3xl mb-6">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-medium text-gray-700">Trusted by 42,000+ travelers</span>
+                </div>
+
+                <h1 class="text-white text-5xl sm:text-6xl leading-[1.05] font-bold tracking-tighter heading">
+                    Discover the<br>world your way
+                </h1>
+
+                <p class="mt-4 text-white/90 text-lg max-w-md">
+                    Handpicked experiences, seamless booking, and unforgettable journeys.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <button onclick="document.getElementById('trips').scrollIntoView({ behavior: 'smooth' })"
+                            class="bg-white hover:bg-gray-100 text-teal-700 font-semibold px-8 py-4 rounded-2xl text-sm flex items-center gap-x-2 transition-all active:scale-[0.985]">
+                        <span>Browse Trips</span>
+                    </button>
+
+                    <button onclick="document.getElementById('how').scrollIntoView({ behavior: 'smooth' })"
+                            class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold px-8 py-4 rounded-2xl text-sm transition-all flex items-center gap-x-2">
+                        <i class="fa-solid fa-compass mr-1"></i>
+                        <span>How it works</span>
+                    </button>
+                </div>
+
+                <div class="mt-8 flex items-center gap-x-6 text-white/80 text-sm">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 bg-amber-400 text-amber-950 rounded-full border-2 border-teal-700 flex items-center justify-center text-[11px] font-bold">ET</div>
+                        <div class="w-8 h-8 bg-rose-300 text-rose-950 rounded-full border-2 border-teal-700 flex items-center justify-center text-[11px] font-bold">KN</div>
+                        <div class="w-8 h-8 bg-sky-300 text-sky-950 rounded-full border-2 border-teal-700 flex items-center justify-center text-[11px] font-bold">LM</div>
+                    </div>
+                    <span><i class="fa-solid fa-star text-amber-300 mr-1"></i>4.98 average rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Search Bar -->
+    <div class="max-w-screen-xl mx-auto px-6 -mt-8 relative z-10">
+        <form onsubmit="event.preventDefault(); searchTrips()" class="bg-white shadow-xl border border-gray-100 rounded-3xl p-2 md:p-3">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="flex-1">
+                    <div class="px-4 pt-2 pb-1">
+                        <label for="search-destination" class="block text-xs font-medium text-gray-500 tracking-wider">WHERE TO?</label>
+                        <input id="search-destination" type="text" placeholder="Paris, Santorini, Bali..." list="destination-suggestions" autocomplete="off"
+                               class="w-full border-0 focus:ring-0 focus:outline-none text-lg font-medium placeholder:text-gray-400 py-1">
+                        <datalist id="destination-suggestions"></datalist>
+                    </div>
+                </div>
+                <div class="flex-1 md:w-44 md:border-l border-gray-100">
+                    <div class="px-4 pt-2 pb-1">
+                        <label for="search-date" class="block text-xs font-medium text-gray-500 tracking-wider">WHEN?</label>
+                        <input id="search-date" type="date"
+                               class="w-full border-0 focus:ring-0 focus:outline-none text-lg font-medium py-1 bg-white">
+                    </div>
+                </div>
+                <div class="flex-1 md:w-36 md:border-l border-gray-100">
+                    <div class="px-4 pt-2 pb-1">
+                        <label for="search-travelers" class="block text-xs font-medium text-gray-500 tracking-wider">TRAVELERS</label>
+                        <select id="search-travelers" class="w-full border-0 focus:ring-0 focus:outline-none text-lg font-medium py-1 bg-white">
+                            <option value="2">2 Travelers</option>
+                            <option value="1">1 Traveler</option>
+                            <option value="3">3 Travelers</option>
+                            <option value="4+">4+ Travelers</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="px-2">
+                    <button type="submit"
+                            class="h-full w-full md:w-auto bg-teal-700 hover:bg-teal-800 transition-colors text-white px-9 font-semibold rounded-2xl text-sm flex items-center justify-center gap-x-2 py-4 md:py-0">
+                        <i class="fa-solid fa-search"></i>
+                        <span class="font-semibold">Search</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Stats -->
+    <div class="max-w-screen-xl mx-auto px-6 pt-16 pb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+                <div class="text-4xl font-bold text-teal-700">128k</div>
+                <div class="text-sm text-gray-600 mt-1">Happy travelers</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-teal-700">42</div>
+                <div class="text-sm text-gray-600 mt-1">Countries explored</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-teal-700">870</div>
+                <div class="text-sm text-gray-600 mt-1">Unique experiences</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-teal-700">98</div>
+                <div class="text-sm text-gray-600 mt-1">% repeat guests</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Destinations -->
+    <section id="destinations" class="max-w-screen-xl mx-auto px-6 pt-6 pb-16">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <span class="uppercase text-teal-700 text-xs tracking-[2px] font-semibold">Popular right now</span>
+                <h2 class="section-header tracking-tight">Featured destinations</h2>
+            </div>
+            <a href="#trips" onclick="filterTrips('all')" class="hidden md:flex items-center gap-x-2 text-sm font-medium text-teal-700 hover:text-teal-800">
+                View all destinations <i class="fa-solid fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Destination Cards -->
+            <div class="group cursor-pointer" onclick="filterByDestination('Santorini')" role="button" tabindex="0" aria-label="See trips to Santorini">
+                <div class="relative h-72 rounded-3xl overflow-hidden">
+                    <div class="destination-bg destination-bg-inner absolute inset-0" style="background-image: url('/.netlify/images?url=/img/santorini.jpg&amp;w=640&amp;fm=webp')"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-white font-semibold text-xl">Santorini</div>
+                                <div class="text-white/80 text-sm">Greece • Europe</div>
+                            </div>
+                            <div class="text-white text-right">
+                                <div class="text-xs">From</div>
+                                <div class="font-semibold">$1,890</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer" onclick="filterByDestination('Bali')" role="button" tabindex="0" aria-label="See trips to Bali">
+                <div class="relative h-72 rounded-3xl overflow-hidden">
+                    <div class="destination-bg destination-bg-inner absolute inset-0" style="background-image: url('/.netlify/images?url=/img/bali.jpg&amp;w=640&amp;fm=webp')"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-white font-semibold text-xl">Bali</div>
+                                <div class="text-white/80 text-sm">Indonesia • Asia</div>
+                            </div>
+                            <div class="text-white text-right">
+                                <div class="text-xs">From</div>
+                                <div class="font-semibold">$1,250</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer" onclick="filterByDestination('Marrakech')" role="button" tabindex="0" aria-label="See trips to Marrakech">
+                <div class="relative h-72 rounded-3xl overflow-hidden">
+                    <div class="destination-bg destination-bg-inner absolute inset-0" style="background-image: url('/.netlify/images?url=/img/marrakech.jpg&amp;w=640&amp;fm=webp')"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-white font-semibold text-xl">Marrakech</div>
+                                <div class="text-white/80 text-sm">Morocco • Africa</div>
+                            </div>
+                            <div class="text-white text-right">
+                                <div class="text-xs">From</div>
+                                <div class="font-semibold">$980</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer" onclick="filterByDestination('Kyoto')" role="button" tabindex="0" aria-label="See trips to Kyoto">
+                <div class="relative h-72 rounded-3xl overflow-hidden">
+                    <div class="destination-bg destination-bg-inner absolute inset-0" style="background-image: url('/.netlify/images?url=/img/kyoto.jpg&amp;w=640&amp;fm=webp')"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-white font-semibold text-xl">Kyoto</div>
+                                <div class="text-white/80 text-sm">Japan • Asia</div>
+                            </div>
+                            <div class="text-white text-right">
+                                <div class="text-xs">From</div>
+                                <div class="font-semibold">$2,450</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trips Section -->
+    <section id="trips" class="bg-white py-16">
+        <div class="max-w-screen-xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                    <span class="uppercase text-teal-700 text-xs tracking-[2px] font-semibold">Curated experiences</span>
+                    <h2 class="section-header tracking-tight">Featured trips</h2>
+                </div>
+                <div class="flex gap-x-3 overflow-x-auto no-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+                    <button onclick="filterTrips('all')" class="filter-btn shrink-0 px-5 py-2 text-sm font-medium rounded-2xl bg-teal-100 text-teal-700" data-filter="all">All</button>
+                    <button onclick="filterTrips('europe')" class="filter-btn shrink-0 px-5 py-2 text-sm font-medium rounded-2xl hover:bg-gray-100" data-filter="europe">Europe</button>
+                    <button onclick="filterTrips('asia')" class="filter-btn shrink-0 px-5 py-2 text-sm font-medium rounded-2xl hover:bg-gray-100" data-filter="asia">Asia</button>
+                    <button onclick="filterTrips('africa')" class="filter-btn shrink-0 px-5 py-2 text-sm font-medium rounded-2xl hover:bg-gray-100" data-filter="africa">Africa</button>
+                </div>
+            </div>
+
+            <div id="search-summary" class="hidden mb-6 items-center justify-between gap-3 bg-teal-50 border border-teal-100 text-teal-900 rounded-2xl px-5 py-3 text-sm">
+                <span id="search-summary-text"></span>
+                <button onclick="clearSearch()" class="font-semibold text-teal-700 hover:text-teal-900 shrink-0">Clear <i class="fa-solid fa-xmark ml-1"></i></button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="trips-grid">
+                <!-- Trip cards populated by JavaScript -->
+            </div>
+
+            <div id="trips-empty" class="hidden text-center py-16">
+                <div class="w-16 h-16 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-map-location-dot text-2xl"></i>
+                </div>
+                <h3 class="font-semibold text-lg">No trips match yet</h3>
+                <p class="text-gray-600 text-sm mt-1 max-w-sm mx-auto">Tell us where you'd like to go and our travel designers will build a custom itinerary for you.</p>
+                <button onclick="showBookingModal()" class="mt-5 bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-2xl text-sm font-semibold transition-colors">Request a custom trip</button>
+            </div>
+
+            <div class="text-center mt-10" id="load-more-wrap">
+                <button onclick="showAllTrips()"
+                        class="px-8 py-3 border border-gray-300 hover:bg-gray-100 transition-colors text-sm font-medium rounded-2xl">
+                    Load more trips
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how" class="max-w-screen-xl mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <span class="uppercase text-teal-700 text-xs tracking-[2px] font-semibold">Simple process</span>
+            <h2 class="section-header tracking-tight mt-2">How it works</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-teal-100 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                    <i class="fa-solid fa-search text-3xl"></i>
+                </div>
+                <h3 class="font-semibold text-lg">1. Search &amp; Explore</h3>
+                <p class="text-gray-600 mt-2 text-sm">Browse our carefully curated collection of trips and destinations.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-teal-100 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                    <i class="fa-solid fa-calendar-check text-3xl"></i>
+                </div>
+                <h3 class="font-semibold text-lg">2. Book in Seconds</h3>
+                <p class="text-gray-600 mt-2 text-sm">Send a booking request in seconds. Our team confirms availability and sends secure payment details.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-teal-100 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                    <i class="fa-solid fa-plane-departure text-3xl"></i>
+                </div>
+                <h3 class="font-semibold text-lg">3. Enjoy the Journey</h3>
+                <p class="text-gray-600 mt-2 text-sm">Receive your travel documents and prepare for an unforgettable adventure.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="bg-teal-900 text-white py-16">
+        <div class="max-w-screen-xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="uppercase text-teal-300 text-xs tracking-[2px] font-semibold">Traveler stories</span>
+                <h2 class="section-header tracking-tight mt-2 heading">Loved by explorers everywhere</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+                    <div class="flex gap-x-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="italic">"Our Santorini trip was absolutely magical. Everything was perfectly organized."</p>
+                    <div class="mt-6 flex items-center gap-x-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-sm font-bold">ET</div>
+                        <div>
+                            <div class="font-medium">Emma Thompson</div>
+                            <div class="text-white/70 text-sm">UK • Luxury Escape</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+                    <div class="flex gap-x-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="italic">"The Kyoto itinerary was the perfect balance of temples, food, and free time. Our guide felt like an old friend."</p>
+                    <div class="mt-6 flex items-center gap-x-3">
+                        <div class="w-10 h-10 rounded-full bg-rose-300 text-rose-950 flex items-center justify-center text-sm font-bold">KN</div>
+                        <div>
+                            <div class="font-medium">Kenji Nakamura</div>
+                            <div class="text-white/70 text-sm">Canada • Culture Journey</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+                    <div class="flex gap-x-1 mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </div>
+                    <p class="italic">"Sleeping under the Sahara stars after days in the Marrakech souks — a once-in-a-lifetime trip, zero stress."</p>
+                    <div class="mt-6 flex items-center gap-x-3">
+                        <div class="w-10 h-10 rounded-full bg-sky-300 text-sky-950 flex items-center justify-center text-sm font-bold">LM</div>
+                        <div>
+                            <div class="font-medium">Lucía Martín</div>
+                            <div class="text-white/70 text-sm">Spain • Adventure Trip</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories -->
+    <section id="blog" class="max-w-screen-xl mx-auto px-6 py-16">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <span class="uppercase text-teal-700 text-xs tracking-[2px] font-semibold">From the journal</span>
+                <h2 class="section-header tracking-tight">Travel stories</h2>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-7" id="stories-grid">
+            <!-- Stories populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="max-w-screen-xl mx-auto px-6 pb-16">
+        <div class="relative overflow-hidden rounded-3xl bg-teal-700 text-white px-8 py-12 md:px-14 md:py-14">
+            <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-white/10"></div>
+            <div class="absolute right-24 -bottom-24 w-56 h-56 rounded-full bg-white/5"></div>
+            <div class="relative grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight heading">Get trip ideas in your inbox</h2>
+                    <p class="text-white/85 mt-3 max-w-md">Early access to new departures, member-only rates, and one beautifully written travel story each month.</p>
+                </div>
+                <form class='netlify-ajax flex flex-col sm:flex-row gap-3' data-success='You\'re on the list! Watch your inbox for our next story.' method='POST' name='newsletter'>
+                    <input type="hidden" name="form-name" value="newsletter">
+                    <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+                    <label for="newsletter-email" class="sr-only">Email address</label>
+                    <input id="newsletter-email" type="email" name="email" required placeholder="you@example.com"
+                           class="flex-1 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <button type="submit" class="bg-white text-teal-700 hover:bg-gray-100 font-semibold px-7 py-4 rounded-2xl text-sm transition-colors">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="max-w-screen-xl mx-auto px-6 py-14 grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div class="col-span-2">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 bg-teal-700 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-globe text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-2xl tracking-tighter text-white">GlobeTrotter</span>
+                        <span class="text-teal-400 font-semibold">Travels</span>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm max-w-xs">Handpicked experiences, seamless booking, and unforgettable journeys since 2014.</p>
+                <div class="flex gap-x-3 mt-5">
+                    <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div>
+                <div class="text-white font-semibold text-sm mb-4">Explore</div>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a href="#destinations" class="hover:text-white">Destinations</a></li>
+                    <li><a href="#trips" class="hover:text-white">Trips</a></li>
+                    <li><a href="#blog" class="hover:text-white">Stories</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-white font-semibold text-sm mb-4">Company</div>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a href="#how" class="hover:text-white">How it works</a></li>
+                    <li><button onclick="showBookingModal()" class="hover:text-white">Custom trips</button></li>
+                    <li><button onclick="showLoginModal()" class="hover:text-white">Traveler accounts</button></li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-white font-semibold text-sm mb-4">Support</div>
+                <ul class="space-y-2.5 text-sm">
+                    <li><i class="fa-solid fa-phone mr-2 text-teal-400"></i>+1 (800) 555-0142</li>
+                    <li><i class="fa-solid fa-envelope mr-2 text-teal-400"></i>hello@globetrotter.travel</li>
+                    <li><i class="fa-solid fa-shield-halved mr-2 text-teal-400"></i>ATOL &amp; IATA protected</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <div class="max-w-screen-xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-3 text-xs">
+                <span>© <span id="year"></span> GlobeTrotter Travels. All rights reserved.</span>
+                <span>Prices are per person, based on two travelers sharing.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="hidden fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+        <div class="modal-backdrop absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('booking-modal')"></div>
+        <div class="relative h-full overflow-y-auto flex items-start md:items-center justify-center p-4">
+            <div class="modal-panel relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden my-8">
+                <button onclick="closeModal('booking-modal')" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow" aria-label="Close">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <div id="booking-trip-banner" class="relative h-40 bg-teal-700 bg-cover bg-center">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10"></div>
+                    <div class="absolute bottom-4 left-6 right-16 text-white">
+                        <div class="text-xs uppercase tracking-[2px] text-white/80" id="booking-banner-kicker">Book your trip</div>
+                        <div class="text-2xl font-bold heading" id="booking-title">Plan your dream journey</div>
+                    </div>
+                </div>
+
+                <form class='netlify-ajax p-6 md:p-8' id='booking-form' method='POST' name='booking'>
+                    <input type="hidden" name="form-name" value="booking">
+                    <input type="hidden" name="subject" value="New booking request • %{siteName}">
+                    <input type="hidden" name="estimated-total" id="booking-total-field">
+                    <input type="hidden" name="reference" id="booking-ref-field">
+                    <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label for="booking-trip" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">TRIP</label>
+                            <select id="booking-trip" name="trip" class="field" onchange="updateBookingSummary()">
+                                <!-- options populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="booking-date" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">DEPARTURE DATE</label>
+                            <input id="booking-date" name="departure-date" type="date" required class="field">
+                        </div>
+                        <div>
+                            <label for="booking-travelers" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">TRAVELERS</label>
+                            <select id="booking-travelers" name="travelers" class="field" onchange="updateBookingSummary()">
+                                <option value="1">1 Traveler</option>
+                                <option value="2" selected>2 Travelers</option>
+                                <option value="3">3 Travelers</option>
+                                <option value="4">4 Travelers</option>
+                                <option value="5">5 Travelers</option>
+                                <option value="6+">6+ Travelers</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="booking-name" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">FULL NAME</label>
+                            <input id="booking-name" name="name" type="text" required autocomplete="name" placeholder="Alex Morgan" class="field">
+                        </div>
+                        <div>
+                            <label for="booking-email" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">EMAIL</label>
+                            <input id="booking-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" class="field">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="booking-phone" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">PHONE <span class="font-normal normal-case tracking-normal text-gray-400">(optional)</span></label>
+                            <input id="booking-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 555 000 0000" class="field">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="booking-notes" class="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">ANYTHING WE SHOULD KNOW?</label>
+                            <textarea id="booking-notes" name="notes" rows="3" placeholder="Celebrations, dietary needs, room preferences, or a custom trip idea..." class="field resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50 rounded-2xl p-4">
+                        <div>
+                            <div class="text-xs text-gray-500">Estimated total</div>
+                            <div class="text-2xl font-bold" id="booking-total">—</div>
+                            <div class="text-xs text-gray-500" id="booking-total-note">No payment taken today</div>
+                        </div>
+                        <button type="submit" class="bg-teal-700 hover:bg-teal-800 disabled:opacity-60 transition-colors text-white px-8 py-4 rounded-2xl text-sm font-semibold flex items-center justify-center gap-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Request booking</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3"><i class="fa-solid fa-lock mr-1"></i>A travel designer confirms availability within 24 hours and sends secure payment details.</p>
+                </form>
+
+                <div id="booking-success" class="hidden p-8 md:p-10 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <i class="fa-solid fa-check text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold heading">Request received!</h3>
+                    <p class="text-gray-600 mt-2 max-w-md mx-auto">Thanks, <span id="booking-success-name"></span>. A travel designer will email you within 24 hours to confirm your <span id="booking-success-trip" class="font-semibold"></span> trip.</p>
+                    <div class="inline-flex items-center gap-x-2 mt-5 bg-gray-50 rounded-2xl px-5 py-3 text-sm">
+                        <span class="text-gray-500">Reference</span>
+                        <span class="font-mono font-semibold" id="booking-ref"></span>
+                    </div>
+                    <div class="mt-7">
+                        <button onclick="closeModal('booking-modal')" class="bg-teal-700 hover:bg-teal-800 text-white px-8 py-3 rounded-2xl text-sm font-semibold transition-colors">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-labelledby="login-title">
+        <div class="modal-backdrop absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('login-modal')"></div>
+        <div class="relative h-full overflow-y-auto flex items-center justify-center p-4">
+            <div class="modal-panel relative bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
+                <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center" aria-label="Close">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="w-12 h-12 bg-teal-100 text-teal-700 rounded-2xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-suitcase-rolling text-xl"></i>
+                </div>
+                <h3 id="login-title" class="text-2xl font-bold heading">Traveler accounts are almost here</h3>
+                <p class="text-gray-600 text-sm mt-2">Soon you'll be able to manage bookings, download travel documents, and save favorite trips. Leave your email and we'll send you an invite as soon as accounts open.</p>
+
+                <form class='netlify-ajax mt-6 space-y-3' data-success='You\'re on the list — we\'ll email your invite as soon as accounts open.' method='POST' name='accounts-waitlist'>
+                    <input type="hidden" name="form-name" value="accounts-waitlist">
+                    <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+                    <label for="waitlist-email" class="sr-only">Email address</label>
+                    <input id="waitlist-email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" class="field">
+                    <button type="submit" class="w-full bg-teal-700 hover:bg-teal-800 transition-colors text-white py-3.5 rounded-2xl text-sm font-semibold">Notify me</button>
+                </form>
+                <p class="text-xs text-gray-500 mt-4 text-center">Already booked? Your travel designer can update your trip by email any time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-gray-900 text-white text-sm px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-x-3 max-w-[90vw]">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-text"></span>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
